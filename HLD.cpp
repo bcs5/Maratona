@@ -37,11 +37,10 @@ void HLD(int v, int par, int cInd){
 	st.push(v);
 	
 	if(~big[v]){
-		HLD(special[v], cInd+1);
+		HLD(big[v], cInd+1);
 	}else{
 		// end of chain
 		chainNo++;
-		return;
 	}
 	for(int i = adj[v]; ~i; i = ant[i]){
 		if(to[i] != par && to[i] != big[v]){

@@ -1,3 +1,4 @@
+
 // R
 for(int i = 0; i < LOG; i++){
 	long double m1 = (A * 2 + B) / 3.0;

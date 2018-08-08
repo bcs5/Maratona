@@ -1,3 +1,4 @@
+
 struct PSEGTREE{
 	private:
 		int z, t, sz, *tree, *L, *R, head[112345];

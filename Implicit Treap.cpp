@@ -49,11 +49,11 @@ void merge (pitem & t, pitem l, pitem r) {
   upd_cnt (t);
 }
 
-void split (pitem t, pitem & l, pitem & r, Key key, int add = 0) {
+void split (pitem t, pitem & l, pitem & r, int key, int add = 0) {
   if (!t)
     return void( l = r = 0 );
   push (t);
-  Key cur_key = add + cnt(t->l);
+  int cur_key = add + cnt(t->l);
   if (key <= cur_key)
     split (t->l, l, t->l, key, add),  r = t;
   else

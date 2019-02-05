@@ -10,7 +10,7 @@ struct edge {
 vector<edge> boruvka (vector<edge> &edges, int n) {
   vector<edge> mst;
   vector<edge> best(n);
-  iota(arr, arr+n, 0);
+  initDSU(n);
   bool f = 1;
   while (f) {
     f = 0;

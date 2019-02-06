@@ -4,7 +4,7 @@ vector<int> g[ms];
 int sz[ms], par[ms], h[ms];
 int t, in[ms], out[ms], rin[ms], nxt[ms];
 
-void dfs_sz (int v = 0, int p = -1) {
+void dfs_sz (int v, int p) {
   sz[v] = 1, par[v] = p;
   for (int i = 0; i < g[v].size(); i++) {
     int &u = g[v][i];
@@ -23,7 +23,7 @@ void dfs_sz (int v = 0, int p = -1) {
   }
 }
 
-void hld (int v = 0, int p = -1) {
+void hld (int v, int p) {
   in[v] = t++;
   rin[in[v]] = v;
   for (auto &u : g[v]) {
@@ -45,7 +45,7 @@ int getLCA (int a, int b) {
   return h[a] < h[b] ? a : b;
 }
 
-vector< pair<int, int> > getPathtoAncestor (int a, int p = 0) {
+vector< pair<int, int> > getPathtoAncestor (int a, int p) {
   vector< pair<int, int> > ans;
   while (nxt[a] != nxt[p]) {
     ans.emplace_back({in[nxt[a]], in[a]});

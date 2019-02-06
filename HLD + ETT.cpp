@@ -20,8 +20,7 @@ void dfs_sz(int v = 0, int p = -1){
 void dfs_hld(int v = 0, int p = -1){
   in[v] = t++;
   rin[in[v]] = v;
-  for(int i = 0; i < g[v].size(); i++){
-    int &u = g[v][i];
+  for(auto &u : g[v]){
     if(u == p) continue;
     nxt[u] = u == g[v][0] ? nxt[v] : u;
     dfs_hld(u, v);

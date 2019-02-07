@@ -66,3 +66,17 @@ public:
     std::vector<int> ord;
     std::vector<std::vector<T>> fw, coord;
 };
+
+//rect query ṕoints
+
+v.push_back({x1, y1});
+v.push_back({x2, y2});
+
+v.push_back({x1, y2+1});
+v.push_back({x1-1, y2});
+
+v.push_back({x2+1, y1});
+v.push_back({x2, y1-1});
+
+v.push_back({x2+1, y2+1});
+v.push_back({x1-1, y1-1});

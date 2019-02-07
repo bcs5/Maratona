@@ -1,14 +1,7 @@
 struct rect {
-  int x1, y1, x2, y2;
+  int x1, y1, x2, y2; // x1 < x2, y1 < y2
   rect () {};
-  rect (int xx1, int yy1, int xx2, int yy2) {
-    x1 = xx1;
-    x2 = xx2;
-    y1 = yy1;
-    y2 = yy2;
-    if (x1 > x2) swap(x1, x2);
-    if (y1 > y2) swap(y1, y2);
-  };
+  rect (int x1, int y1, int x2, int y2) : x1(x1), x2(x2), y1(y1), y2(y2) {};
   rect inter (rect other) {
     int x3 = max(x1, other.x1);
     int y3 = max(y1, other.y1);

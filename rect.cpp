@@ -4,10 +4,10 @@ struct rect {
   rect (int xx1, int yy1, int xx2, int yy2) {
     x1 = xx1;
     x2 = xx2;
-    x2 = xx2;
+    y1 = yy1;
     y2 = yy2;
     if (x1 > x2) swap(x1, x2);
-	  if (y1 > y2) swap(y1, y2);
+    if (y1 > y2) swap(y1, y2);
   };
   rect inter (rect other) {
     int x3 = max(x1, other.x1);

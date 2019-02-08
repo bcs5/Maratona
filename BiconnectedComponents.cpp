@@ -34,3 +34,10 @@ void dfs (int v, int p) {
   }
   if (low[v] == num[v]) generateBc(v);
 }
+
+void biCon (int n) {
+  memset(num, -1, sizeof num);
+  for (int i = 0; i < n; i++) {
+    if (num[i] == -1) dfs(i, 0);
+  }
+}

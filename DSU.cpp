@@ -21,9 +21,11 @@ struct dsu {
     sz[b] += sz[a];
     hist[a] = t;
   }
+  
   bool same (int a, int b, int t) {
     return root(a, t) == root(b, t);
   }
+  
   int when (int a, int b) {
     while (1) {
       if (hist[a] > hist[b]) swap(a, b);

@@ -24,4 +24,12 @@ struct dsu {
   bool same (int a, int b, int t) {
     return root(a, t) == root(b, t);
   }
+  int when (int a, int b) {
+    while (1) {
+      if (hist[a] > hist[b]) swap(a, b);
+      if (par[a] == b) return hist[a];
+      if (hist[a] == 1e9) return 1e9;
+      a = par[a];
+    }
+  }
 };

@@ -48,9 +48,9 @@ int getLCA (int a, int b) {
 vector< pair<int, int> > getPathtoAncestor (int a, int p) {
   vector< pair<int, int> > ans;
   while (nxt[a] != nxt[p]) {
-    ans.emplace_back({in[nxt[a]], in[a]});
+    ans.emplace_back(in[nxt[a]], in[a]);
     a = par[nxt[a]];
   }
-  ans.emplace_back({in[p], in[a]});
+  ans.emplace_back(in[p], in[a]);  // in[p]+1;
   return ans;
 }

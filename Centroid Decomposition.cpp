@@ -1,12 +1,19 @@
+#include <bits/stdc++.h>
+
+using namespace std;
 template<typename T>
 struct CentroidDecomposition {
-  vector<int> sz, dad;
+  vector<int> sz, h, dad;
   vector<vector<int, T>> adj, dis;
+  vector<bool> removed;
+  
   
   CentroidDecomposition (int n) {
     sz.resize(n);
+    h.resize(n);
     dis.resize(n, vector<int>(30));
     adj.resize(n);
+    removed.resize(n, 0);
   }
   
   void dfsSize (int v, int par){
@@ -26,7 +33,7 @@ struct CentroidDecomposition {
     return v;
   }
 
-  void setDis (int v, int par, int nv, int d){
+  void setDis (int v, int par, int nv, long long d){
     dis[v][nv] = d;
     for (int u : adj[v]) {
       if (u == par || removed[u]) continue;
@@ -34,11 +41,12 @@ struct CentroidDecomposition {
     }
   }
 
-  void decompose (int v, int par, int nv){
+  void decompose (int v, int par = -1, int nv = 0){
     dfsSize(v, par);
     int c = getCentroid(v, par, sz[v]);
     dad[c] = par;
     removed[c] = 1;
+    h[v] = nv;
     setDis(c, par, nv, 0);
     for (int u : adj[c]){
       if (!removed[u]){
@@ -50,4 +58,9 @@ struct CentroidDecomposition {
   int operator [] (const int idx) const {
     return dad[idx];
   }
+  
+  T dist (int ct, int v) {
+    return dis[ct][h[ct]];
+  }
 };
+

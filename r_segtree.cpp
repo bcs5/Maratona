@@ -58,7 +58,7 @@ struct segtree_t {
     }
     int m = (l+r)/2;
     upd(lc, a, b, l, m, x + x);
-    upd(lc, a, b, m+1, r, x + x + 1);
+    upd(lc, a, b, m, r, x + x + 1);
     tree[x] = n_t(tree[x + x], tree[x + x + 1]);
   }
   
@@ -69,6 +69,6 @@ struct segtree_t {
     }
     push(x, l, r);
     int m = (l+r)/2;
-    return n_t(qry(a, b, l, m, x + x), qry(a, b, m+1, r, x + x + 1));
+    return n_t(qry(a, b, l, m, x + x), qry(a, b, m, r, x + x + 1));
   }
 };

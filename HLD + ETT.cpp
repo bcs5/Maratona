@@ -30,7 +30,7 @@ void hld (int v, int p) {
     nxt[u] = u == g[v][0] ? nxt[v] : u;
     hld(u, v);
   }
-  out[v] = t-1;
+  out[v] = t;
 }
 
 int getLCA (int u, int v) {
@@ -40,15 +40,15 @@ int getLCA (int u, int v) {
 }
 
 bool inSubtree (int u, int v) { // is v in the subtree of u?
-  return in[u] <= in[v] && in[v] <= out[u];
+  return in[u] <= in[v] && in[v] < out[u];
 }
 
 vector< pair<int, int> > getPathtoAncestor (int a, int p) {
   vector< pair<int, int> > ans;
   while (nxt[a] != nxt[p]) {
-    ans.emplace_back(in[nxt[a]], in[a]);
+    ans.emplace_back(in[nxt[a]], in[a] + 1);
     a = par[nxt[a]];
   }
-  ans.emplace_back(in[p], in[a]);  // in[p]+1;
+  ans.emplace_back(in[p], in[a] + 1);  // in[p]+1;
   return ans;
 }

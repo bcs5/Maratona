@@ -49,7 +49,7 @@ public:
       h[u] = h[v] + 1;
       dfs(u, v);
     }
-    out[v] = t - 1;
+    out[v] = t;
   };
 
   void set_root(int x) {

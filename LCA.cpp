@@ -53,7 +53,6 @@ public:
   };
 
   void set_root(int x) {
-    int t = 0;
     h[x] = 0;
     dfs(x, x);
   }

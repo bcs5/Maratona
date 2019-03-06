@@ -16,7 +16,14 @@ public:
     up.resize(n, vector<int>(max_log));
     t = 0;
   }
-
+  
+  int walk (int x, int k) {
+    for (int i = max_log - 1; i >= 0; i--) {
+      if (k & (1<<i)) x = up[x][i];
+    }
+    return x;
+  }
+  
   bool anc(int x, int y) {
     return in[x] <= in[y] && out[x] >= out[y];
   }

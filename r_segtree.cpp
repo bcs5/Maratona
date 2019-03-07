@@ -48,6 +48,18 @@ struct segtree_t {
     lazy.resize(4*_n);
   }
   
+  void build (int l, int r, int x = 1) {
+    lazy[x] = l_t(0, 0);
+    if (l == r) {
+      tree[x] = n_t(0, 1);
+      return;
+    }
+    int m = (l+r)/2;
+    build(l, m, x + x);
+    build(m+1, r, x + x + 1);
+    tree[x] = n_t(tree[x + x], tree[x + x + 1]);
+  }
+  
   void upd (l_t lc, int a, int b, int l, int r, int x = 1) {
     push(x, l, r);
     if (a > r || b < l) return;
@@ -58,7 +70,7 @@ struct segtree_t {
     }
     int m = (l+r)/2;
     upd(lc, a, b, l, m, x + x);
-    upd(lc, a, b, m, r, x + x + 1);
+    upd(lc, a, b, m+1, r, x + x + 1);
     tree[x] = n_t(tree[x + x], tree[x + x + 1]);
   }
   
@@ -69,6 +81,10 @@ struct segtree_t {
     }
     push(x, l, r);
     int m = (l+r)/2;
-    return n_t(qry(a, b, l, m, x + x), qry(a, b, m, r, x + x + 1));
+    return n_t(qry(a, b, l, m, x + x), qry(a, b, m+1, r, x + x + 1));
   }
+  
+  void upd (l_t lc, int a, int b) { upd(lc, a, b, 0, n-1); };
+  n_t qry (int a, int b) { return qry(a, b, 0, n-1); };
+  void build () { build(0, n-1); };
 };

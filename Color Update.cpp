@@ -1,3 +1,15 @@
+struct range {
+		range(int l = 0) { this->l = l; }
+		range(int l, int r, int v) {
+			this->l = l;
+			this->r = r;
+			this->v = v;
+		}
+		int l, r;
+		int v;
+		bool operator < (const range &b) const { return l < b.l; }
+};
+
 set<range> ranges;
 
 void split (int x) {

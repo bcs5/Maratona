@@ -1,8 +1,20 @@
+int adj[ms], to[me], ant[me], z;
 int num[ms], low[ms], timer;
 int art[ms], bridge[me], rch;
 int bc[ms], nbc;
 stack<int> st;
 bool f[me];
+
+void clear() { // Lembrar de chamar no main
+  memset(adj, -1, sizeof adj);
+  z = 0;
+}
+
+void add(int u, int v) {
+  to[z] = v;
+  ant[z] = adj[u];
+  adj[u] = z++;
+}
 
 void generateBc (int v) {
   ++nbc;

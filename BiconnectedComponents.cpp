@@ -17,13 +17,13 @@ void add(int u, int v) {
 }
 
 void generateBc (int v) {
-  ++nbc;
   while (!st.empty()) {
     int u = st.top();
     st.pop();
     bc[u] = nbc;
     if (v == u) break;
   }
+  ++nbc;
 }
 
 void dfs (int v, int p) {
@@ -49,6 +49,7 @@ void dfs (int v, int p) {
 
 void biCon (int n) {
   memset(num, -1, sizeof num);
+  memset(bc, -1, sizeof bc);
   for (int i = 0; i < n; i++) {
     if (num[i] == -1) dfs(i, 0);
   }

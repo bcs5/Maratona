@@ -1,44 +1,36 @@
-// 1073676287
-template <typename T>
+ll base[1123456];
+ll prime = 0xdefaced;
+ll mod = 1073676287;
+
 struct stringh {
-  string s;
-  vector<T> h, rh;
-  vector<T> h_base;
-  T mod;
-  
+  vector<ll> a, b;
   stringh () {};
   
-  stringh (string &s, T mod = 1) : s(s), mod(mod) {
-    h.resize(s.size()+1);
-    rh.resize(s.size()+1);
-    h_base.resize(s.size()+1);
-    hash_init();
-  }
-  
-  void hash_init (T prime = 0xdefaced) {
-    h_base[0] = 1;
-    h[0] = 0;
-    
-    for (int i = 1; i <= s.size(); i++){
-      h[i] = (h[i-1] * prime + s[i-1]) % mod;
-      h_base[i] = (h_base[i-1] * prime) % mod;
+  stringh (string &s) {
+    a.resize(s.size()+1);
+    b.resize(s.size()+1);
+    a[0] = 0;
+    for (int i = 0; i < s.size(); i++){
+      a[i+1] = (a[i] * prime + s[i]) % mod;
     }
-    rh[0] = 0;
-    for (int i = 1; i <= s.size(); i++) {
-      rh[i] = (rh[i-1] * prime + s[s.size()-i]) % mod;
+    b[s.size()] = 0;
+    for (int i = s.size()-1; i >= 0; i--) {
+      b[i] = (b[i+1] * prime + s[i]) % mod;
     }
   }
-  
-  T get (int l, int r) {
-    return (h[r+1] - (h[l] * h_base[r-l+1]) % mod + mod) % mod;
+  // 0 based
+  ll get (int l, int r) {
+    return (a[r+1] - a[l] * base[r-l+1] % mod + mod) % mod;
   }
   
-  T rget (int l, int r) {
-    int nl = (s.size()-1-r), nr = (s.size()-l);
-    return (rh[nr] - (rh[nl] * h_base[r-l+1]) % mod + mod) % mod;
-  }
-  
-  T get (int l, int r, bool f) {
-    return (f) ? rget (l, r) : get(l, r);
+  ll rget (int l, int r) {
+    return (b[l] - b[r+1] * base[r-l+1] % mod + mod) % mod;
   }
 };
+
+void init () {
+  base[0] = 1;
+  for (int i = 1; i < 1123456; i++) {
+    base[i] = (base[i-1] * prime) % mod;
+  }
+}

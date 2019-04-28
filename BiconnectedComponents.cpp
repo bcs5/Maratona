@@ -10,6 +10,7 @@ void clear() { // Lembrar de chamar no main
   z = 0;
 }
 
+
 void add(int u, int v) {
   to[z] = v;
   ant[z] = adj[u];
@@ -48,9 +49,16 @@ void dfs (int v, int p) {
 }
 
 void biCon (int n) {
+  nbc = 0, timer = 0;
   memset(num, -1, sizeof num);
   memset(bc, -1, sizeof bc);
+  memset(bridge, 0, sizeof bridge);
+  memset(art, 0, sizeof art);
+  memset(f, 0, sizeof f);
   for (int i = 0; i < n; i++) {
-    if (num[i] == -1) dfs(i, 0);
+    if (num[i] == -1) {
+      rch = 0;
+      dfs(i, 0);
+    }
   }
 }

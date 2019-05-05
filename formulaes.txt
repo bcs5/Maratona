@@ -1,3 +1,11 @@
+Brahmagupta’s formula
 s = (a+b+c+d)/2
 area = sqrt((s-a)*(s-b)*(s-c)*(s-d))
 d = 0 => area = sqrt((s-a)*(s-b)*(s-c)*s)
+
+a and m coprime
+a^ϕ(m) = 1 mod m
+a^n = a^(n mod ϕ(m))
+
+a and m not coprime, a,m and n >= log2m
+a^n = a ^ ( ϕ(m)+[n mod ϕ(m)] ) mod m

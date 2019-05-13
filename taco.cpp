@@ -111,6 +111,26 @@ void sortByAngle(vector<PT>::iterator first, vector<PT>::iterator last, const PT
   sort(pivot, last, acmp);
 }
 
+vector<PT> circleCircle(PT a, double r, PT b, double R) {
+  vector<PT> ret;
+  double d = norm(a-b);
+  if (d > r + R || d + min(r, R) < max(r, R)) return ret;
+  double x = (d*d - R*R + r*r) / (2*d); // x = r*cos(R opposite angle)
+  double y = sqrt(r*r - x*x);
+  PT v = (b - a)/d;
+  ret.push_back(a + v*x + rotateCCW90(v)*y);
+  if (y > 0)
+  ret.push_back(a + v*x - rotateCCW90(v)*y);
+  return ret;
+}
+
+double circularSegArea (double r, double R, double d) {
+  double ang = 2 * acos((d*d - R*R + r*r) / (2*d*r)); // cos(R opposite angle) = x/r
+  double tri = sin(ang) * r * r;
+	double sector = ang * r * r;
+	return (sector - tri) / 2;
+}
+
 int main () {
   ios::sync_with_stdio(0);
   cin.tie(0);

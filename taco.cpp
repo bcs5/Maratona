@@ -98,28 +98,24 @@ PT computeCircleCenter (PT a, PT b, PT c) {
   return computeLineIntersection(b, b + rotateCW90(a - b), c, c + rotateCW90(a - c));
 }
 
-void sortByAngle(vector<PT> &v, const PT o) {
-  sort(v.begin(), v.end());
-  auto first = partition(v.begin(), v.end(), [&o] (const PT &a) {
-    return a == o;
-  });
-  auto pivot = partition(first, v.end(), [&o] (const PT &a) {
-    return !(a < o || a == o);
+void sortByAngle(vector<PT>::iterator first, vector<PT>::iterator last, const PT o) {
+  first = partition(first, last, [&o] (const PT &a) { return a == o; });
+  auto pivot = partition(first, last, [&o] (const PT &a) {
+    return !(a < o || a == o); // PT(a.y, a.x) < PT(o.y, o.x)
   });
   auto acmp = [&o] (const PT &a, const PT &b) {
     if (abs(cross(a-o, b-o)) > eps) return cross(a-o, b-o) > 0;
-    if (a.x-o.x != b.x-o.x) return a.x < b.x;
-    return a.y < b.y;
+    else return dist2(a, o) < dist2(b, o);
   };
   sort(first, pivot, acmp);
-  sort(pivot, v.end(), acmp);
+  sort(pivot, last, acmp);
 }
 
 int main () {
   ios::sync_with_stdio(0);
   cin.tie(0);
   vector<PT> v {PT{5, 5}, PT{1, 1}, PT{-1, -1}, {1, -1}, {-5, -5}};
-  sortByAngle(v, PT());
+  sortByAngle(v.begin(), v.end(), PT());
   for (int i = 0; i < v.size(); i++) {
     cout << v[i].x << " " << v[i].y << endl;
   }

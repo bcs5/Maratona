@@ -5,20 +5,20 @@ const double inf = 1e100, eps = 1e-9;
 const double PI = acos(-1.0L);
 
 struct PT {
-	double x, y;
-	PT(double x = 0, double y = 0) : x(x), y(y) {}
-	PT operator + (const PT &p) const { return PT(x+p.x, y+p.y); }
-	PT operator - (const PT &p) const { return PT(x-p.x, y-p.y); }
-	PT operator * (double c) const { return PT(x*c, y*c); }
-	PT operator / (double c) const { return PT(x/c, y/c); }
-	
-	bool operator <(const PT &p) const {
-		if(fabs(x - p.x) >= eps) return x < p.x;
-		return fabs(y - p.y) >= eps && y < p.y;
-	}
-	bool operator ==(const PT &p) const {
-		return !(*this < p || p < *this);
-	}
+  double x, y;
+  PT(double x = 0, double y = 0) : x(x), y(y) {}
+  PT operator + (const PT &p) const { return PT(x+p.x, y+p.y); }
+  PT operator - (const PT &p) const { return PT(x-p.x, y-p.y); }
+  PT operator * (double c) const { return PT(x*c, y*c); }
+  PT operator / (double c) const { return PT(x/c, y/c); }
+  
+  bool operator <(const PT &p) const {
+    if(fabs(x - p.x) >= eps) return x < p.x;
+    return fabs(y - p.y) >= eps && y < p.y;
+  }
+  bool operator ==(const PT &p) const {
+    return !(*this < p || p < *this);
+  }
 };
 
 double dot (PT p, PT q) { return p.x * q.x + p.y*q.y; }
@@ -108,7 +108,8 @@ void sortByAngle(vector<PT> &v, const PT o) {
   });
   auto acmp = [&o] (const PT &a, const PT &b) {
     if (abs(cross(a-o, b-o)) > eps) return cross(a-o, b-o) > 0;
-    return abs(a.x) < abs(b.x);
+    if (a.x-o.x != b.x-o.x) return a.x < b.x;
+    return a.y < b.y;
   };
   sort(first, pivot, acmp);
   sort(pivot, v.end(), acmp);

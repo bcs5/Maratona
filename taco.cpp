@@ -119,6 +119,10 @@ vector<PT> circle2PtsRad (PT p1, PT p2, double r) {
   return ret;
 }
 
+bool circleLineIntersection(PT a, PT b, PT c, double r) {
+  return cmp(dist2(c, projectPointLine(a, b, c)), r*r) <= 0;
+}
+
 vector<PT> circleLine (PT a, PT b, PT c, double r) {
   vector<PT> ret;
   b = b - a;
@@ -127,12 +131,13 @@ vector<PT> circleLine (PT a, PT b, PT c, double r) {
   double B = dot(a, b);
   double C = dot(a, a) - r*r;
   double D = B*B - A*C;
-  if (cmp(D) == -1) return ret;
+  if (D < -eps) return ret;
   ret.push_back(c + a + b*(-B + sqrt(D + eps)) / A);
-  if (cmp(D) > 0)
+  if (D > eps)
     ret.push_back(c + a + b*(-B - sqrt(D)) / A);
   return ret;
 }
+
 
 // area / semiperimeter
 double rIncircle (PT a, PT b, PT c) {

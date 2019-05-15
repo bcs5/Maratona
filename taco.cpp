@@ -205,6 +205,7 @@ vector< pair<PT, PT> > getTangentSegs (PT c1, double r1, PT c2, double r2) {
   if (r1 < r2) swap(c1, c2), swap(r1, r2);
   vector<pair<PT, PT> > ans;
   double d = dist(c1, c2);
+  if (cmp(d) <= 0) return ans;
   double dr = abs(r1 - r2), sr = r1 + r2;
   if (cmp(dr, d) >= 0) return ans;
   double u = acos(dr / d);

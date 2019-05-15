@@ -26,6 +26,7 @@ double cross (PT p, PT q) { return p.x * q.y - p.y*q.x; }
 double dist2 (PT p, PT q = PT(0, 0)) { return dot(p-q, p-q); }
 double dist (PT p, PT q) { return hypot(p.x-q.x, p.y-q.y); }
 double norm (PT p) { return hypot(p.x, p.y); }
+double normalize (PT p) { p/hypot(p.x, p.y); }
 double angle (PT p, PT q) { return atan2(cross(p, q), dot(p, q)); }
 
 // - p.y*sen(+90), p.x*sen(+90)
@@ -209,13 +210,13 @@ vector< pair<PT, PT> > getTangentSegs (PT c1, double r1, PT c2, double r2) {
   double dr = abs(r1 - r2), sr = r1 + r2;
   if (cmp(dr, d) >= 0) return ans;
   double u = acos(dr / d);
-  PT dc1 = (c2 - c1)/norm(c2 - c1)*r1;
-  PT dc2 = (c2 - c1)/norm(c2 - c1)*r2;
+  PT dc1 = normalize(c2 - c1)*r1;
+  PT dc2 = normalize(c2 - c1)*r2;
   ans.push_back(make_pair(c1 + rotateCCW(dc1, +u), c2 + rotateCCW(dc2, +u)));
   ans.push_back(make_pair(c1 + rotateCCW(dc1, -u), c2 + rotateCCW(dc2, -u)));
   if (cmp(sr, d) >= 0) return ans;
   double v = acos(sr / d);
-  dc2 = (c1 - c2)/norm(c1 - c2)*r2;
+  dc2 = normalize(c1 - c2)*r2;
   ans.push_back({c1 + rotateCCW(dc1, +v), c2 + rotateCCW(dc2, +v)});
   ans.push_back({c1 + rotateCCW(dc1, -v), c2 + rotateCCW(dc2, -v)});
   return ans;

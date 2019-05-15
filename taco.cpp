@@ -23,7 +23,7 @@ struct PT {
 
 double dot (PT p, PT q) { return p.x * q.x + p.y*q.y; }
 double cross (PT p, PT q) { return p.x * q.y - p.y*q.x; }
-double dist2 (PT p, PT q) { return dot(p-q, p-q); }
+double dist2 (PT p, PT q = PT(0, 0)) { return dot(p-q, p-q); }
 double dist (PT p, PT q) { return hypot(p.x-q.x, p.y-q.y); }
 double norm (PT p) { return hypot(p.x, p.y); }
 double angle (PT p, PT q) { return atan2(cross(p, q), dot(p, q)); }
@@ -47,9 +47,9 @@ PT reflectPointLine (PT a, PT b, PT c) {
   return p*2 - c;
 }
 
-bool cmp (double a, double b = 0) {
+int cmp (double a, double b = 0) {
   if (abs(a-b) < eps) return 0;
-  return a < b ? -1 : +1;
+  return (a < b) ? -1 : +1;
 }
 
 PT projectPointSegment (PT a, PT b, PT c) {
@@ -104,7 +104,22 @@ PT computeCircleCenter (PT a, PT b, PT c) {
   return computeLineIntersection(b, b + rotateCW90(a - b), c, c + rotateCW90(a - c));
 }
 
-vector<PT> circleLine(PT a, PT b, PT c, double r) {
+vector<PT> circle2PtsRad (PT p1, PT p2, double r) {
+  vector<PT> ret;
+  double d2 = dist2(p1, p2);
+  double det = r * r / d2 - 0.25;
+  if (det < 0.0) return ret;
+  double h = sqrt(det);
+  for (int i = 0; i < 2; i++) {
+    double x = (p1.x + p2.x) * 0.5 + (p1.y - p2.y) * h;
+    double y = (p1.y + p2.y) * 0.5 + (p2.x - p1.x) * h;
+    ret.push_back(PT(x, y));
+    swap(p1, p2);
+  }
+  return ret;
+}
+
+vector<PT> circleLine (PT a, PT b, PT c, double r) {
   vector<PT> ret;
   b = b - a;
   a = a - c;
@@ -158,12 +173,50 @@ double circularSegArea (double r, double R, double d) {
   return (sector - tri) / 2;
 }
 
+double computeSignedArea (const vector<PT> &p) {
+  double area = 0;
+  for (int i = 0; i < p.size(); i++) {
+    int j = (i+1) % p.size();
+    area += p[i].x*p[j].y - p[j].x*p[i].y;
+  }
+  return area;
+}
+
+double computeArea (const vector<PT> &p) {
+  return abs(computeSignedArea(p));
+}
+
+PT computeCentroid (const vector<PT> &p) {
+  PT c(0,0);
+  double scale = 6.0 * computeSignedArea(p);
+  for(int i = 0; i < p.size(); i++){
+    int j = (i + 1) % p.size();
+    c = c + (p[i] + p[j]) * (p[i].x * p[j].y - p[j].x * p[i].y);
+  }
+  return c / scale;
+}
+
+vector< pair<PT, PT> > getTangentSegs (PT c1, double r1, PT c2, double r2) {
+  if (r1 < r2) swap(c1, c2), swap(r1, r2);
+  vector<pair<PT, PT> > ans;
+  double d = dist(c1, c2);
+  double dr = abs(r1 - r2), sr = r1 + r2;
+  if (cmp(dr, d) >= 0) return ans;
+  double u = acos(dr / d);
+  PT dc1 = (c2 - c1)/norm(c2 - c1)*r1;
+  PT dc2 = (c2 - c1)/norm(c2 - c1)*r2;
+  ans.push_back(make_pair(c1 + rotateCCW(dc1, +u), c2 + rotateCCW(dc2, +u)));
+  ans.push_back(make_pair(c1 + rotateCCW(dc1, -u), c2 + rotateCCW(dc2, -u)));
+  if (cmp(sr, d) >= 0) return ans;
+  double v = acos(sr / d);
+  dc2 = (c1 - c2)/norm(c1 - c2)*r2;
+  ans.push_back({c1 + rotateCCW(dc1, +v), c2 + rotateCCW(dc2, +v)});
+  ans.push_back({c1 + rotateCCW(dc1, -v), c2 + rotateCCW(dc2, -v)});
+  return ans;
+}
+
 int main () {
   ios::sync_with_stdio(0);
   cin.tie(0);
-  vector<PT> v {PT{5, 5}, PT{1, 1}, PT{-1, -1}, {1, -1}, {-5, -5}};
-  sortByAngle(v.begin(), v.end(), PT());
-  for (int i = 0; i < v.size(); i++) {
-    cout << v[i].x << " " << v[i].y << endl;
-  }
+  cout << fixed << setprecision(9);
 }

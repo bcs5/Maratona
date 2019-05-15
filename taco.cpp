@@ -13,8 +13,8 @@ struct PT {
   PT operator / (double c) const { return PT(x/c, y/c); }
   
   bool operator <(const PT &p) const {
-    if(fabs(x - p.x) >= eps) return x < p.x;
-    return fabs(y - p.y) >= eps && y < p.y;
+    if(abs(x - p.x) >= eps) return x < p.x;
+    return abs(y - p.y) >= eps && y < p.y;
   }
   bool operator ==(const PT &p) const {
     return !(*this < p || p < *this);
@@ -120,7 +120,7 @@ vector<PT> circle2PtsRad (PT p1, PT p2, double r) {
 }
 
 bool circleLineIntersection(PT a, PT b, PT c, double r) {
-  return cmp(dist2(c, projectPointLine(a, b, c)), r*r) <= 0;
+    return cmp(dist(c, projectPointLine(a, b, c)), r) <= 0;
 }
 
 vector<PT> circleLine (PT a, PT b, PT c, double r) {

@@ -49,7 +49,7 @@ PT projectPointLine (PT a, PT b, PT c) {
 }
 
 PT reflectPointLine (PT a, PT b, PT c) {
-  auto p = projectPointLine(a, b, c);
+  PT p = projectPointLine(a, b, c);
   return p*2 - c;
 }
 
@@ -131,16 +131,17 @@ bool circleLineIntersection(PT a, PT b, PT c, double r) {
 
 vector<PT> circleLine (PT a, PT b, PT c, double r) {
   vector<PT> ret;
-  b = b - a;
-  a = a - c;
-  double A = dot(b, b);
-  double B = dot(a, b);
-  double C = dot(a, a) - r*r;
-  double D = B*B - A*C;
-  if (D < -eps) return ret;
-  ret.push_back(c + a + b*(-B + sqrt(D + eps)) / A);
-  if (D > eps)
-    ret.push_back(c + a + b*(-B - sqrt(D)) / A);
+  PT p = projectPointLine(a, b, c), p1;
+  double h = norm(c-p);
+  if (cmp(h,r) == 0) {
+    ret.push_back(p);
+  } else if (cmp(h,r) < 0) {
+    double k = sqrt(r*r - h*h);
+    p1 = p + (b-a)/(norm(b-a))*k;
+    ret.push_back(p1);
+    p1 = p - (b-a)/(norm(b-a))*k;
+    ret.push_back(p1);
+  }
   return ret;
 }
 
@@ -156,7 +157,7 @@ void sortByAngle (vector<PT>::iterator first, vector<PT>::iterator last, const P
   auto pivot = partition(first, last, [&o] (const PT &a) {
     return !(a < o || a == o); // PT(a.y, a.x) < PT(o.y, o.x)
   });
-  auto acmp = [&o] (const PT &a, const PT &b) {
+  auto acmp = [&o] (const PT &a, const PT &b) { // C++11 only
     if (cmp(cross(a-o, b-o)) != 0) return cross(a-o, b-o) > 0;
     else return dist2(a, o) < dist2(b, o);
   };

@@ -26,7 +26,7 @@ double cross (PT p, PT q) { return p.x * q.y - p.y*q.x; }
 double dist2 (PT p, PT q = PT(0, 0)) { return dot(p-q, p-q); }
 double dist (PT p, PT q) { return hypot(p.x-q.x, p.y-q.y); }
 double norm (PT p) { return hypot(p.x, p.y); }
-double normalize (PT p) { p/hypot(p.x, p.y); }
+PT normalize (PT p) { return p/hypot(p.x, p.y); }
 double angle (PT p, PT q) { return atan2(cross(p, q), dot(p, q)); }
 double angle (PT p) { return atan2(p.y, p.x); }
 double polarAngle (PT p) {

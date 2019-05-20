@@ -28,6 +28,11 @@ double dist (PT p, PT q) { return hypot(p.x-q.x, p.y-q.y); }
 double norm (PT p) { return hypot(p.x, p.y); }
 double normalize (PT p) { p/hypot(p.x, p.y); }
 double angle (PT p, PT q) { return atan2(cross(p, q), dot(p, q)); }
+double angle (PT p) { return atan2(p.y, p.x); }
+double polarAngle (PT p) {
+  double a = atan2(p.y,p.x);
+  return a < 0 ? a + 2*PI : a;
+}
 
 // - p.y*sen(+90), p.x*sen(+90)
 PT rotateCCW90 (PT p) { return PT(-p.y, p.x); }

@@ -159,7 +159,7 @@ void sortByAngle (vector<PT>::iterator first, vector<PT>::iterator last, const P
   });
   auto acmp = [&o] (const PT &a, const PT &b) { // C++11 only
     if (cmp(cross(a-o, b-o)) != 0) return cross(a-o, b-o) > 0;
-    else return cmp(norm(a-o), norm(b-o));
+    else return cmp(norm(a-o), norm(b-o)) < 0;
   };
   sort(first, pivot, acmp);
   sort(pivot, last, acmp);

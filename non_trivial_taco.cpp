@@ -42,12 +42,13 @@ vector<PT> convexHull(vector<PT> p) {
   return h;
 }
 
-vector<PT> graham (vector<PT> p) {
+vector<PT> graham (vector<PT> v) {
   sort(v.begin(), v.end());
   sortByAngle(v.begin(), v.end(), v[0]);
-  vector<PT> top (v.size());
-  for (int i = 0; i < n; i++) {
-    while (top > 1 && cmp(cross(u[top] - u[top-1], v[i]-u[top-1])) <= 0) top--;
+  vector<PT> u (v.size());
+  int top = 0;
+  for (int i = 0; i < v.size(); i++) {
+    while (top > 1 && cmp(cross(u[top-1] - u[top-2], v[i]-u[top-2])) <= 0) top--;
     u[top++] = v[i];
   }
   u.resize(top);

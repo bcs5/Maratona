@@ -25,3 +25,31 @@ circle spanningCircle (vector<PT> &v) {
   }
   return C;
 }
+
+vector<PT> convexHull(vector<PT> p) {
+  int n = p.size(), k = 0;
+  vector<PT> h(2 * n);
+  sort(p.begin(), p.end());
+  for(int i = 0; i < n; i++) {
+    while(k >= 2 && cmp(cross(h[k - 1] - h[k - 2], p[i] - h[k - 2])) <= 0) k--;
+    h[k++] = p[i];
+  }
+  for(int i = n - 2, t = k + 1; i >= 0; i--) {
+    while(k >= t && cmp(cross(h[k - 1] - h[k - 2], p[i] - h[k - 2])) <= 0) k--;
+    h[k++] = p[i];
+  }
+  h.resize(k); // n+1 points where the first is equal to the last
+  return h;
+}
+
+vector<PT> graham (vector<PT> p) {
+  sort(v.begin(), v.end());
+  sortByAngle(v.begin(), v.end(), v[0]);
+  vector<PT> top (v.size());
+  for (int i = 0; i < n; i++) {
+    while (top > 1 && cmp(cross(u[top] - u[top-1], v[i]-u[top-1])) <= 0) top--;
+    u[top++] = v[i];
+  }
+  u.resize(top);
+  return u;
+}

@@ -1,9 +1,9 @@
 typedef pair<PT, double> circle;
-bool inCircle(circle c, PT p){
+bool inCircle (circle c, PT p){
   return cmp(dist(c.first, p), c.second) <= 0;
 }
 
-PT circumcenter(PT p, PT q, PT r){
+PT circumcenter (PT p, PT q, PT r){
   PT a = p-r, b = q-r;
   PT c = PT(dot(a, p+r)/2, dot(b, q+r)/2);
   return PT(cross(c, PT(a.y,b.y)), cross(PT(a.x,b.x), c)) / cross(a, b);
@@ -26,16 +26,16 @@ circle spanningCircle (vector<PT> &v) {
   return C;
 }
 
-vector<PT> convexHull(vector<PT> p) {
+vector<PT> convexHull (vector<PT> p) {
   int n = p.size(), k = 0;
   vector<PT> h(2 * n);
   sort(p.begin(), p.end());
-  for(int i = 0; i < n; i++) {
-    while(k >= 2 && cmp(cross(h[k - 1] - h[k - 2], p[i] - h[k - 2])) <= 0) k--;
+  for (int i = 0; i < n; i++) {
+    while (k >= 2 && cmp(cross(h[k - 1] - h[k - 2], p[i] - h[k - 2])) <= 0) k--;
     h[k++] = p[i];
   }
-  for(int i = n - 2, t = k + 1; i >= 0; i--) {
-    while(k >= t && cmp(cross(h[k - 1] - h[k - 2], p[i] - h[k - 2])) <= 0) k--;
+  for (int i = n - 2, t = k + 1; i >= 0; i--) {
+    while (k >= t && cmp(cross(h[k - 1] - h[k - 2], p[i] - h[k - 2])) <= 0) k--;
     h[k++] = p[i];
   }
   h.resize(k); // n+1 points where the first is equal to the last
@@ -53,4 +53,19 @@ vector<PT> graham (vector<PT> v) {
   }
   u.resize(top);
   return u;
+}
+
+vector<PT> cutPolygon (vector<PT> Q, PT a, PT b) {
+  PT vec = normalize(rotateCW90(b-a));
+  vector<PT> resp;
+  for (int i = 0; i < Q.size(); i++) {
+    int j = (i+1)%Q.size();
+    double n1 = dot(Q[i]-a, vec);
+    double n2 = dot(Q[j]-a, vec);
+    if (n1 >= -eps) resp.push_back(Q[i]);
+    if ((n1 < -eps && n2 > eps) || (n1 > eps && n2 < -eps)) {
+      resp.push_back(computeLineIntersection(a, b, Q[i], Q[j]));
+    }
+  }
+  return resp;
 }

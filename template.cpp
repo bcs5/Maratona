@@ -18,3 +18,10 @@ typedef long long ll;
 typedef pair<int, int> ii;
 
 const int inf = 0x3f3f3f3f;
+
+int main () {
+  #ifdef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+  #endif
+}

@@ -26,6 +26,23 @@ struct PT {
   }
 };
 
+// Line with integer
+typedef pair<PT, int> Line;
+PT getDir (PT a, PT b) {
+  if (a.x == b.x) return PT(0, 1};
+  if (a.y == b.y) return PT(1, 0);
+  int dx = b.x-a.x;
+  int dy = b.y-a.y;
+  int g = __gcd(abs(dx), abs(dy));
+  if (dx < 0) g *= -1;
+  return PT(dx/g, dy/g);
+}
+                            
+Line getLine (PT a, PT b) {
+  PT dir = getDir(a, b);
+  return {dir, cross(dir, a)}
+}
+
 double dot (PT p, PT q) { return p.x * q.x + p.y*q.y; }
 double cross (PT p, PT q) { return p.x * q.y - p.y*q.x; }
 double dist2 (PT p, PT q = PT(0, 0)) { return dot(p-q, p-q); }
@@ -46,6 +63,23 @@ PT rotateCW90 (PT p) { return PT(p.y, -p.x); }
 
 PT rotateCCW (PT p, double t) {
   return PT(p.x*cos(t)-p.y*sin(t), p.x*sin(t)+p.y*cos(t));
+}
+
+// !!! PT (int, int)
+typedef pair<PT, int> Line;
+PT getDir (PT a, PT b) {
+  if (a.x == b.x) return PT(0, 1);
+  if (a.y == b.y) return PT(1, 0);
+  int dx = b.x-a.x;
+  int dy = b.y-a.y;
+  int g = __gcd(abs(dx), abs(dy));
+  if (dx < 0) g = -g;
+  return PT(dx/g, dy/g);
+}
+
+Line getLine (PT a, PT b) {
+  PT dir = getDir(a, b);
+  return {dir, cross(dir, a)};
 }
 
 // a.b = |a| cost * |b|

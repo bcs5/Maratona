@@ -42,5 +42,5 @@ int query (int v) {
     return -1;
   }
   it--;
-  return it->r >= v ? it->v : -1;
+  return it->r > v ? it->v : -1;
 }

@@ -69,7 +69,7 @@ int maxflow(int source, int sink) {
   return ret;
 }
 
-vector<int> coverU, U, coverV, V; // ITA - Partição U, partição V, 0 indexed
+vector<int> coverU, U, coverV, V; // ITA - Partição U LEFT, partição V RIGHT, 1 indexed
 bool Zu[mx], Zv[mx];
 int pairU[mx], pairV[mx];
 void getreach(int u) {
@@ -83,7 +83,14 @@ void getreach(int u) {
   }
 }
 
-void minimumcover (int n) {
+void minimumcover () {
+  for (auto i : U) {
+    for (int j = adj[i]; ~j; j = ant[j]) {
+      if (!(j&1) && !wt[j]) {
+        pairU[i] = to[j], pairV[to[j]] = i;
+      }
+    }
+  }
   memset(&Zu, 0, sizeof Zu);
   memset(&Zv, 0, sizeof Zv);
   for (auto u : U) {
@@ -121,14 +128,7 @@ int main () {
     else add(i, SINK, 1), V.push_back(i);
   }
   cout << maxflow(SOURCE, SINK) << endl;
-  for (auto i : U) {
-    for (int j = adj[i]; ~j; j = ant[j]) {
-      if (!(j&1) && !wt[j]) {
-        pairU[i] = to[j], pairV[to[j]] = i;
-      }
-    }
-  }
-  minimumcover(n);
+  minimumcover();
   vector<int> ans;
   for (auto u: coverU) ans.push_back(u);
   for (auto u: coverV) ans.push_back(u);

@@ -1,13 +1,9 @@
-#include <vector>
-#include <utility>
-#include <algorithm>
-
-typedef std::pair<int, int> ii;
+typedef pair<int, int> ii;
 template<typename T>
 struct Bit2D {
 public:
-  Bit2D(std::vector<ii> pts) {
-    std::sort(pts.begin(), pts.end());
+  Bit2D(vector<ii> pts) {
+    sort(pts.begin(), pts.end());
     for(auto a : pts) {
       if(ord.empty() || a.first != ord.back())
         ord.push_back(a.first);
@@ -15,12 +11,12 @@ public:
     fw.resize(ord.size() + 1);
     coord.resize(fw.size());
     for(auto &a : pts)
-      std::swap(a.first, a.second);
-    std::sort(pts.begin(), pts.end());
+      swap(a.first, a.second);
+    sort(pts.begin(), pts.end());
     for(auto &a : pts) {
-      std::swap(a.first, a.second);
-      for(int on = std::upper_bound(ord.begin(), ord.end(), a.first) - ord.begin(); on < fw.size(); on += on & -on) {
-        if(coord[on].empty() || coord[on].back() != a.second);
+      swap(a.first, a.second);
+      for(int on = upper_bound(ord.begin(), ord.end(), a.first) - ord.begin(); on < fw.size(); on += on & -on) {
+        if(coord[on].empty() || coord[on].back() != a.second)
           coord[on].push_back(a.second);
       }
     }
@@ -30,8 +26,8 @@ public:
   }
   
   void upd(int x, int y, T v) {
-    for(int xx = std::upper_bound(ord.begin(), ord.end(), x) - ord.begin(); xx < fw.size(); xx += xx & -xx) {
-      for(int yy = std::upper_bound(coord[xx].begin(), coord[xx].end(), y) - coord[xx].begin(); yy < fw[xx].size(); yy += yy & -yy) {
+    for(int xx = upper_bound(ord.begin(), ord.end(), x) - ord.begin(); xx < fw.size(); xx += xx & -xx) {
+      for(int yy = upper_bound(coord[xx].begin(), coord[xx].end(), y) - coord[xx].begin(); yy < fw[xx].size(); yy += yy & -yy) {
         fw[xx][yy] += v;
       }
     }
@@ -39,8 +35,8 @@ public:
 
   T qry(int x, int y) {
     T ans = 0;
-    for(int xx = std::upper_bound(ord.begin(), ord.end(), x) - ord.begin(); xx > 0; xx -= xx & -xx) {
-      for(int yy = std::upper_bound(coord[xx].begin(), coord[xx].end(), y) - coord[xx].begin(); yy > 0; yy -= yy & -yy) {
+    for(int xx = upper_bound(ord.begin(), ord.end(), x) - ord.begin(); xx > 0; xx -= xx & -xx) {
+      for(int yy = upper_bound(coord[xx].begin(), coord[xx].end(), y) - coord[xx].begin(); yy > 0; yy -= yy & -yy) {
         ans += fw[xx][yy];
       }
     }
@@ -63,20 +59,20 @@ public:
   }
 	
   private:
-    std::vector<int> ord;
-    std::vector<std::vector<T>> fw, coord;
+    vector<int> ord;
+    vector<std::vector<T>> fw, coord;
 };
+
+//rect update ṕoints
+
+v.push_back({x1, y1});
+v.push_back({x1, y2+1});
+v.push_back({x2+1, y1});
+v.push_back({x2+1, y2+1});
 
 //rect query ṕoints
 
-v.push_back({x1, y1});
 v.push_back({x2, y2});
-
-v.push_back({x1, y2+1});
 v.push_back({x1-1, y2});
-
-v.push_back({x2+1, y1});
 v.push_back({x2, y1-1});
-
-v.push_back({x2+1, y2+1});
 v.push_back({x1-1, y1-1});

@@ -23,12 +23,13 @@ struct PT {
     return cmp(y, p.y) < 0;
   }
 };
-  
-int pg;
+
 double eval (double x, PT a, PT b) {
-  double k =  (pg-a.x)/(b.x-a.x);
+  double k =  (x-a.x)/(b.x-a.x);
   return (a + (b-a)*k).y;
 }
+
+int pg;
 struct Line {
   PT a, b;
   int id;

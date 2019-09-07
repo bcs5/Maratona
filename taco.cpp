@@ -1,6 +1,5 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+#define x first
+#define y second
 const double inf = 1e100, eps = 1e-9;
 const double PI = acos(-1.0L);
 
@@ -25,23 +24,6 @@ struct PT {
     return (cmp(x, p.x) || cmp(y, p.y)) == 0;
   }
 };
-
-// Line with integer
-typedef pair<PT, int> Line;
-PT getDir (PT a, PT b) {
-  if (a.x == b.x) return PT(0, 1};
-  if (a.y == b.y) return PT(1, 0);
-  int dx = b.x-a.x;
-  int dy = b.y-a.y;
-  int g = __gcd(abs(dx), abs(dy));
-  if (dx < 0) g *= -1;
-  return PT(dx/g, dy/g);
-}
-                            
-Line getLine (PT a, PT b) {
-  PT dir = getDir(a, b);
-  return {dir, cross(dir, a)}
-}
 
 double dot (PT p, PT q) { return p.x * q.x + p.y*q.y; }
 double cross (PT p, PT q) { return p.x * q.y - p.y*q.x; }
@@ -179,7 +161,6 @@ vector<PT> circleLine (PT a, PT b, PT c, double r) {
   return ret;
 }
 
-
 // area / semiperimeter
 double rIncircle (PT a, PT b, PT c) {
   double ab = norm(a-b), bc = norm(b-c), ca = norm(c-a);
@@ -262,8 +243,27 @@ vector< pair<PT, PT> > getTangentSegs (PT c1, double r1, PT c2, double r2) {
   return ans;
 }
 
-int main () {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-  cout << fixed << setprecision(9);
+bool ptInsideTriangle(PT p, PT a, PT b, PT c) {
+  if(cross(b-a, c-b) < 0) swap(a, b);
+  long long x = cross(b-a, p-b);
+  long long y = cross(c-b, p-c);
+  long long z = cross(a-c, p-a);
+  if(x > 0 && y > 0 && z > 0) return true;
+  if(!x) return ptInSegment(a,b,p);
+  if(!y) return ptInSegment(b,c,p);
+  if(!z) return ptInSegment(c,a,p);
+  return false;
+}
+
+// Determina se o ponto esta num poligono convexo em O(lgn)
+bool pointInConvexPolygon(const vector<PT> &p, PT q) {
+  PT pivot = p[0];
+  int x = 1, y = p.size();
+  while(y-x != 1) {
+    int z = (x+y)/2;
+    PT diagonal = pivot - p[z];
+    if(cross(p[x] - pivot, q - pivot) * cross(q-pivot, p[z] - pivot) >= 0) y = z;
+    else x = z;
+  }
+  return ptInsideTriangle(q, p[x], p[y], pivot);
 }
